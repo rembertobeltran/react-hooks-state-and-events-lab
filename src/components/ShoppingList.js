@@ -1,7 +1,17 @@
 import React from "react";
+import { useState } from "react/cjs/react.production.min";
 import Item from "./Item";
 
 function ShoppingList({ items }) {
+  const [categorySet, setCategory] = useState('All');
+  const allItems = items.filter((item) => {
+    return categorySet === 'All' ? item : item.category === categorySet;
+  });
+  const handleChange = (e) => setCategory(e.target.value);
+  const selectedItems = allItems.map((item) => {
+    <Item key={item.id} name={item.name} category={item.category} />
+  })
+
   return (
     <div className="ShoppingList">
       <div className="Filter">
@@ -13,9 +23,7 @@ function ShoppingList({ items }) {
         </select>
       </div>
       <ul className="Items">
-        {items.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
-        ))}
+        {selectedItems}
       </ul>
     </div>
   );
